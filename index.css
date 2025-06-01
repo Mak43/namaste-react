@@ -5,3 +5,50 @@
     flex-direction: row;
     margin: 200px 200px;
 }
+.res-header{
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid black;
+    padding: 10px 10px;
+}
+.res-logo{
+    width: 140px;
+    padding: 5px;
+}
+.res-nav-items>ul{
+    display: flex;
+    list-style-type: none;
+}
+.res-nav-items>ul>li{
+   padding: 10px;
+   margin: 10px;
+
+}
+.res-card{
+    width: 150px;
+    height: 370px;
+    padding: 5px;
+    background-color: lightgray;
+    margin-bottom: 10px;
+    margin: 5px;
+}
+.res-card-logo{
+    width: 120px;
+    padding: 5px;
+}
+.res-card:hover{
+    border: 1px solid black;
+    cursor: pointer;
+
+}
+.res-footer{
+    border: 1px solid black;
+    padding: 20px 20px;
+}
+.res-card-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+.res-search{
+    margin: 10px;
+}
