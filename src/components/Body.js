@@ -1,92 +1,82 @@
 import RestaurantCard from "./RestaurantCard";
+import Shimmer from "./Shimmer";
 import resList from "../utils/mockData";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { SWIGGY_API } from "../utils/constants";
 
 export const Body = () => {
-  const [listOfRestaurants1, setListofRestaurants1] = useState([
-    {
-      info: {
-        id: "49005",
-        name: "McDonald's",
-        cloudinaryImageId:
-          "RX_THUMBNAIL/IMAGES/VENDOR/2025/5/22/e11f982b-1228-40ec-99ec-c589500d84e3_49005.JPG",
-        cuisines: ["Burgers", "Beverages", "Cafe", "Desserts"],
-        avgRating: 4.4,
-      },
-    },
-    {
-      info: {
-        id: "49006",
-        name: "KFC",
-        cloudinaryImageId:
-          "RX_THUMBNAIL/IMAGES/VENDOR/2025/5/22/e11f982b-1228-40ec-99ec-c589500d84e3_49005.JPG",
-        cuisines: ["Burgers", "Beverages", "Cafe", "Desserts"],
-        avgRating: 3.4,
-      },
-    },
-    {
-      info: {
-        id: "49007",
-        name: "pizza Hut",
-        cloudinaryImageId:
-          "RX_THUMBNAIL/IMAGES/VENDOR/2025/5/22/e11f982b-1228-40ec-99ec-c589500d84e3_49005.JPG",
-        cuisines: ["Burgers", "Beverages", "Cafe", "Desserts"],
-        avgRating: 4.5,
-      },
-    },
-  ]);
+  const [searchText, setSearchText] = useState("");
   //state variable
-  const [listOfRestaurants, setListofRestaurants] = useState(resList);
-  //normal js variable
-  let listOfRestaurantsJs = [
-    {
-      info: {
-        id: "49005",
-        name: "McDonald's",
-        cloudinaryImageId:
-          "RX_THUMBNAIL/IMAGES/VENDOR/2025/5/22/e11f982b-1228-40ec-99ec-c589500d84e3_49005.JPG",
-        cuisines: ["Burgers", "Beverages", "Cafe", "Desserts"],
-        avgRating: 4.4,
-      },
-    },
-    {
-      info: {
-        id: "49006",
-        name: "KFC",
-        cloudinaryImageId:
-          "RX_THUMBNAIL/IMAGES/VENDOR/2025/5/22/e11f982b-1228-40ec-99ec-c589500d84e3_49005.JPG",
-        cuisines: ["Burgers", "Beverages", "Cafe", "Desserts"],
-        avgRating: 3.4,
-      },
-    },
-    {
-      info: {
-        id: "49007",
-        name: "pizza Hut",
-        cloudinaryImageId:
-          "RX_THUMBNAIL/IMAGES/VENDOR/2025/5/22/e11f982b-1228-40ec-99ec-c589500d84e3_49005.JPG",
-        cuisines: ["Burgers", "Beverages", "Cafe", "Desserts"],
-        avgRating: 4.5,
-      },
-    },
-  ];
-  return (
+  const [listOfRestaurants, setListofRestaurants] = useState([]);
+  const [filterListOfRestaurants, setFilterListofRestaurants] = useState([]);
+
+  useEffect(() => {
+    // console.log("post comp render");
+    fetchData();
+  }, []);
+  const fetchData = async () => {
+    const data = await fetch(SWIGGY_API);
+    const jsonData = await data.json();
+    //optional chaining ?
+    setListofRestaurants(
+      jsonData?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+        ?.restaurants
+    ); //data from Swiggy Api
+    setFilterListofRestaurants(
+      jsonData?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+        ?.restaurants
+    );
+    console.log(listOfRestaurants);
+  };
+
+  //conditional rendering option 1
+
+  // if(listOfRestaurants.length === 0)
+  // {
+  //   return <Shimmer/>
+  // }
+
+  //conditional rendering option 2
+  return listOfRestaurants?.length === 0 ? (
+    <Shimmer />
+  ) : (
     <div className="res-body">
       <div className="filter">
+        <div className="search">
+          <input
+            type="text"
+            className="search-box"
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+            }}
+          ></input>
+          <button
+            className="search-btn"
+            onClick={() => {
+              const filteredList = listOfRestaurants.filter((res) =>
+                res.info.name.toLowerCase().includes(searchText.toLowerCase())
+              );
+              setFilterListofRestaurants(filteredList);
+            }}
+          >
+            search
+          </button>
+        </div>
         <button
           className="filter-btn"
           onClick={() => {
             const filteredList = listOfRestaurants.filter(
               (res) => res.info.avgRating > 4.4
             );
-            setListofRestaurants(filteredList);
+            setFilterListofRestaurants(filteredList);
           }}
         >
           filter restaurant
         </button>
       </div>
       <div className="res-card-container">
-        {listOfRestaurants.map((restaurant) => (
+        {filterListOfRestaurants?.map((restaurant) => (
           <RestaurantCard key={restaurant.info.id} resData={restaurant} />
         ))}
         {/* comments in JSX*/}
