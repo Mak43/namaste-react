@@ -1,3 +1,4 @@
+
 #heading{
     color: red;
     align-items: center;
@@ -10,6 +11,7 @@
     justify-content: space-between;
     border: 1px solid black;
     padding: 10px 10px;
+    /* background-image: url("https://img.icons8.com/?size=100&id=SENAO5gAbChk&format=png&color=000000"); */
 }
 .res-logo{
     width: 140px;

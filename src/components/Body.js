@@ -3,6 +3,7 @@ import Shimmer from "./Shimmer";
 import resList from "../utils/mockData";
 import { useEffect, useState } from "react";
 import { SWIGGY_API } from "../utils/constants";
+import { Link } from 'react-router'
 
 export const Body = () => {
   const [searchText, setSearchText] = useState("");
@@ -77,7 +78,7 @@ export const Body = () => {
       </div>
       <div className="res-card-container">
         {filterListOfRestaurants?.map((restaurant) => (
-          <RestaurantCard key={restaurant.info.id} resData={restaurant} />
+          <Link key={restaurant.info.id} to={"/restaurants/"+restaurant.info.id}><RestaurantCard  resData={restaurant} /></Link>
         ))}
         {/* comments in JSX*/}
       </div>
