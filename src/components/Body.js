@@ -14,6 +14,13 @@ export const Body = () => {
   useEffect(() => {
     // console.log("post comp render");
     fetchData();
+    const timer = setInterval(()=>{
+      console.log("krte raho")
+    },1000);
+    return ()=>{
+      console.log("unmounting phase");
+      clearInterval(timer);
+    }
   }, []);
   const fetchData = async () => {
     const data = await fetch(SWIGGY_API);

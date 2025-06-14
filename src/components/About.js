@@ -29,11 +29,7 @@ class About extends React.Component {
       <div>
         <h1>About Page</h1>
         <h2>This is about page</h2>
-        <User name={"mayank from (function)"} />
         <UserClass name={"first child (class)"} />
-        <UserClass name={"second child (class)"} />
-        <UserClass name={"third child (class)"} />
-
       </div>
     );
   }
