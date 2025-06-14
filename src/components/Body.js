@@ -4,6 +4,7 @@ import resList from "../utils/mockData";
 import { useEffect, useState } from "react";
 import { SWIGGY_API } from "../utils/constants";
 import { Link } from 'react-router'
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 export const Body = () => {
   const [searchText, setSearchText] = useState("");
@@ -43,6 +44,10 @@ export const Body = () => {
   // {
   //   return <Shimmer/>
   // }
+  const onlineStatus =  useOnlineStatus();
+
+  if(onlineStatus === false)
+  return <h1>looks like your internet is down</h1>
 
   //conditional rendering option 2
   return listOfRestaurants?.length === 0 ? (
