@@ -10,16 +10,16 @@ const Header = () => {
     console.log(" called");
   },[btnName]);
   return (
-    <div className="res-header">
-      <div className="res-logo">
+    <div className="flex justify-between shadow border-2 to-black m-2">
+      <div className="w-56 m-4 p-4">
         <img src={LOGO_URL} alt="rest-logo" />
       </div>
-      <div className="res-nav-items">
-        <ul>
-          <li>Online Status: {onlineStatus ? "✅" : "🔴"}</li>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/contact">Contact</Link></li>
+      <div className="flex items-center">
+        <ul className="flex p-10 px-5">
+          <li className="px-4">Online Status: {onlineStatus ? "✅" : "🔴"}</li>
+          <li className="px-4"><Link to="/">Home</Link></li>
+          <li className="px-4"><Link to="/about">About</Link></li>
+          <li className="px-4"><Link to="/contact">Contact</Link></li>
           <button className="login-btn" onClick={()=>(btnName === "login" ? setBtnName('logout'): setBtnName('login'))}>{btnName}</button>
         </ul>
       </div>

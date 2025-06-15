@@ -37,13 +37,6 @@ export const Body = () => {
     );
     console.log(listOfRestaurants);
   };
-
-  //conditional rendering option 1
-
-  // if(listOfRestaurants.length === 0)
-  // {
-  //   return <Shimmer/>
-  // }
   const onlineStatus =  useOnlineStatus();
 
   if(onlineStatus === false)
@@ -54,18 +47,18 @@ export const Body = () => {
     <Shimmer />
   ) : (
     <div className="res-body">
-      <div className="filter">
-        <div className="search">
+      <div className="flex">
+        <div className="m-4">
           <input
             type="text"
-            className="search-box"
+            className="border to-black"
             value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value);
             }}
           ></input>
-          <button
-            className="search-btn"
+          <button 
+            className="m-4 px-4 py-2 bg-gray-100 rounded-xl"
             onClick={() => {
               const filteredList = listOfRestaurants.filter((res) =>
                 res.info.name.toLowerCase().includes(searchText.toLowerCase())
@@ -76,8 +69,9 @@ export const Body = () => {
             search
           </button>
         </div>
+        <div className="m-4">
         <button
-          className="filter-btn"
+          className="m-4 px-4 py-2 bg-gray-100 rounded-xl"
           onClick={() => {
             const filteredList = listOfRestaurants.filter(
               (res) => res.info.avgRating > 4.4
@@ -87,8 +81,10 @@ export const Body = () => {
         >
           filter restaurant
         </button>
+        </div>
+       
       </div>
-      <div className="res-card-container">
+      <div className="flex flex-wrap">
         {filterListOfRestaurants?.map((restaurant) => (
           <Link key={restaurant.info.id} to={"/restaurants/"+restaurant.info.id}><RestaurantCard  resData={restaurant} /></Link>
         ))}
