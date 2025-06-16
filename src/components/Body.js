@@ -1,4 +1,4 @@
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, {withPromotedLabel} from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import resList from "../utils/mockData";
 import { useEffect, useState } from "react";
@@ -11,7 +11,7 @@ export const Body = () => {
   //state variable
   const [listOfRestaurants, setListofRestaurants] = useState([]);
   const [filterListOfRestaurants, setFilterListofRestaurants] = useState([]);
-
+  const RestaurantCardPromoted = withPromotedLabel(RestaurantCard);
   useEffect(() => {
     // console.log("post comp render");
     fetchData();
@@ -35,12 +35,12 @@ export const Body = () => {
       jsonData?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants
     );
-    console.log(listOfRestaurants);
   };
   const onlineStatus =  useOnlineStatus();
 
   if(onlineStatus === false)
   return <h1>looks like your internet is down</h1>
+  console.log(listOfRestaurants);
 
   //conditional rendering option 2
   return listOfRestaurants?.length === 0 ? (
@@ -86,7 +86,10 @@ export const Body = () => {
       </div>
       <div className="flex flex-wrap">
         {filterListOfRestaurants?.map((restaurant) => (
-          <Link key={restaurant.info.id} to={"/restaurants/"+restaurant.info.id}><RestaurantCard  resData={restaurant} /></Link>
+          <Link key={restaurant.info.id} to={"/restaurants/"+restaurant.info.id}>
+            {restaurant.info.avgRating > 4.5 ? <RestaurantCardPromoted resData={restaurant}/> :
+            <RestaurantCard  resData={restaurant} />}
+            </Link>
         ))}
         {/* comments in JSX*/}
       </div>
