@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import { Body } from "./components/Body";
@@ -9,13 +9,20 @@ import Contact from "./components/Contact";
 import Error from "./components/Error";
 import RestaurantMenu from "./components/RestaurantMenu";
 const About = lazy(() => import("./components/About")); // dynamic loading
+import UserContext from "./utils/UserContext";
+
 const AppLayout = () => {
+  const [userName, setUserName]= useState("Elon Musk")
   return (
-    <div className="res-layout">
-      <Header />
-      <Outlet />
-      <Footer />
-    </div>
+    <UserContext.Provider value={{ loggedInUser: userName, setUserName }}>
+      <div className="res-layout">
+        <UserContext.Provider value={{ loggedInUser: "maksongara" }}>
+          <Header />
+        </UserContext.Provider>
+        <Outlet />
+        <Footer />
+      </div>
+    </UserContext.Provider>
   );
 };
 //will create routes and it has an array of route

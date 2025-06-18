@@ -1,10 +1,11 @@
-import RestaurantCard, {withPromotedLabel} from "./RestaurantCard";
+import RestaurantCard, { withPromotedLabel } from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import resList from "../utils/mockData";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { SWIGGY_API } from "../utils/constants";
-import { Link } from 'react-router'
+import { Link } from "react-router";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
 
 export const Body = () => {
   const [searchText, setSearchText] = useState("");
@@ -12,16 +13,18 @@ export const Body = () => {
   const [listOfRestaurants, setListofRestaurants] = useState([]);
   const [filterListOfRestaurants, setFilterListofRestaurants] = useState([]);
   const RestaurantCardPromoted = withPromotedLabel(RestaurantCard);
+  const dataContext = useContext(UserContext);
+  console.log(dataContext.loggedInUser);
   useEffect(() => {
     // console.log("post comp render");
     fetchData();
-    const timer = setInterval(()=>{
-      console.log("krte raho")
-    },1000);
-    return ()=>{
+    const timer = setInterval(() => {
+      console.log("krte raho");
+    }, 1000);
+    return () => {
       console.log("unmounting phase");
       clearInterval(timer);
-    }
+    };
   }, []);
   const fetchData = async () => {
     const data = await fetch(SWIGGY_API);
@@ -36,10 +39,11 @@ export const Body = () => {
         ?.restaurants
     );
   };
-  const onlineStatus =  useOnlineStatus();
+  const onlineStatus = useOnlineStatus();
 
-  if(onlineStatus === false)
-  return <h1>looks like your internet is down</h1>
+  const {loggedInUser, setUserName} = useContext(UserContext);
+
+  if (onlineStatus === false) return <h1>looks like your internet is down</h1>;
   console.log(listOfRestaurants);
 
   //conditional rendering option 2
@@ -57,7 +61,7 @@ export const Body = () => {
               setSearchText(e.target.value);
             }}
           ></input>
-          <button 
+          <button
             className="m-4 px-4 py-2 bg-gray-100 rounded-xl"
             onClick={() => {
               const filteredList = listOfRestaurants.filter((res) =>
@@ -70,26 +74,35 @@ export const Body = () => {
           </button>
         </div>
         <div className="m-4">
-        <button
-          className="m-4 px-4 py-2 bg-gray-100 rounded-xl"
-          onClick={() => {
-            const filteredList = listOfRestaurants.filter(
-              (res) => res.info.avgRating > 4.4
-            );
-            setFilterListofRestaurants(filteredList);
-          }}
-        >
-          filter restaurant
-        </button>
+          <button
+            className="m-4 px-4 py-2 bg-gray-100 rounded-xl"
+            onClick={() => {
+              const filteredList = listOfRestaurants.filter(
+                (res) => res.info.avgRating > 4.4
+              );
+              setFilterListofRestaurants(filteredList);
+            }}
+          >
+            filter restaurant
+          </button>
         </div>
-       
+        <div className="m-4 px-4 py-2">
+          <label>UserName: </label>
+          <input className="border border-b" type="text" value={loggedInUser} onChange={(e)=>setUserName(e.target.value)} />
+        </div>
       </div>
       <div className="flex flex-wrap">
         {filterListOfRestaurants?.map((restaurant) => (
-          <Link key={restaurant.info.id} to={"/restaurants/"+restaurant.info.id}>
-            {restaurant.info.avgRating > 4.5 ? <RestaurantCardPromoted resData={restaurant}/> :
-            <RestaurantCard  resData={restaurant} />}
-            </Link>
+          <Link
+            key={restaurant.info.id}
+            to={"/restaurants/" + restaurant.info.id}
+          >
+            {restaurant.info.avgRating > 4.5 ? (
+              <RestaurantCardPromoted resData={restaurant} />
+            ) : (
+              <RestaurantCard resData={restaurant} />
+            )}
+          </Link>
         ))}
         {/* comments in JSX*/}
       </div>
