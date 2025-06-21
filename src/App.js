@@ -10,10 +10,14 @@ import Error from "./components/Error";
 import RestaurantMenu from "./components/RestaurantMenu";
 const About = lazy(() => import("./components/About")); // dynamic loading
 import UserContext from "./utils/UserContext";
+import {Provider} from "react-redux"
+import appStore from "./utils/appStore";
+import Cart from "./components/Cart";
 
 const AppLayout = () => {
   const [userName, setUserName]= useState("Elon Musk")
   return (
+    <Provider store={appStore}>
     <UserContext.Provider value={{ loggedInUser: userName, setUserName }}>
       <div className="res-layout">
         <UserContext.Provider value={{ loggedInUser: "maksongara" }}>
@@ -23,6 +27,7 @@ const AppLayout = () => {
         <Footer />
       </div>
     </UserContext.Provider>
+    </Provider>
   );
 };
 //will create routes and it has an array of route
@@ -38,6 +43,10 @@ const appRoute = createBrowserRouter([
       {
         path: "/contact",
         element: <Contact />,
+      },
+      {
+        path: "/cart",
+        element: <Cart/>,
       },
       {
         path: "/about",

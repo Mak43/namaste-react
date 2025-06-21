@@ -3,11 +3,15 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { Link } from "react-router"
 import useOnlineStatus from "../utils/useOnlineStatus";
 import UserContext from "../utils/UserContext";
+import {useSelector} from "react-redux";
 
 const Header = () => {
   const [btnName, setBtnName] = useState('login');
   const onlineStatus = useOnlineStatus();
   const dataContext = useContext(UserContext);
+  //subscribing the store
+  const cartitems = useSelector((store)=>store.cart.items);
+  console.log(cartitems);
   useEffect(()=>{
     console.log(" called");
   },[btnName]);
@@ -22,6 +26,7 @@ const Header = () => {
           <li className="px-4"><Link to="/">Home</Link></li>
           <li className="px-4"><Link to="/about">About</Link></li>
           <li className="px-4"><Link to="/contact">Contact</Link></li>
+          <li className="px-4 font-bold text-2xl"><Link to="/cart">Cart - ({cartitems.length} items)</Link></li>
           <button className="login-btn" onClick={()=>(btnName === "login" ? setBtnName('logout'): setBtnName('login'))}>{btnName}</button>
           <li className="px-4 font-bold">{dataContext.loggedInUser}</li>
         </ul>
